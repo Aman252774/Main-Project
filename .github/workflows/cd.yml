@@ -1,0 +1,33 @@
+name: "CD Pipeline"
+
+on: 
+    workflow_run:
+        workflows: ["Simple Workflows"] #Which workflow you want to technically target.(kaun se ci workflow ko deploy karna chahate ho.)
+        types:
+            - completed
+jobs: 
+    deploy:
+        runs-on: ubuntu-latest
+        environment: production
+
+        steps:
+            - name: "Setup node.js"
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '21'
+            
+            - name: "Setup vercel cli"
+              run: npm install -g vercel
+
+            - name: "Downloads dist folder"
+              uses: actions/download-artifact@v4
+              with: 
+                name: dist
+                run-id: ${{ github.event.workflow_run.id}} # Example context: Yah batata hai kaun se workflow se download karna hai dist folder ko. This is unique id we need to give. Nahi to github token dete hai.
+#Maan lo aapke paas ek main workflow hai (build.yml) aur ek secondary workflow hai (deploy.yml) jo tab trigger hota hai jab build.yml khatam hota hai.
+#Tab deploy.yml ke andar aapko previous workflow ka ID chahiye hota hai (taaki aap uske artifacts download kar sako, status check kar sako, etc.)
+                github-token: ${{github.token}} # Uss repository me jayega jisame token store hai.
+
+            - name: "Deploy to vercel"
+              run: vercel --prod --token=${{secrets.AMAN_TOKEN}} --confirm --name=MainApp 
+              # {${secrets.AMAN_TOKEN}}: Iska matlab hai hmm fetch karna chahte hai token ko. Jo ye token hai tumne kaha se liya(Environment secrets se).
