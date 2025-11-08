@@ -27,7 +27,8 @@ jobs:
 #Maan lo aapke paas ek main workflow hai (build.yml) aur ek secondary workflow hai (deploy.yml) jo tab trigger hota hai jab build.yml khatam hota hai.
 #Tab deploy.yml ke andar aapko previous workflow ka ID chahiye hota hai (taaki aap uske artifacts download kar sako, status check kar sako, etc.)
                 github-token: ${{github.token}} # Uss repository me jayega jisame token store hai.
-
+# github-token ek input hai (jo usually kisi GitHub action ko authentication ke liye chahiye hota hai).
+# Aur github.token ek default token hota hai jo GitHub har workflow run ke liye automatically generate karta hai.
             - name: "Deploy to vercel"
               run: vercel --prod --token=${{secrets.AMAN_TOKEN}} --confirm --name=MainApp 
               # {${secrets.AMAN_TOKEN}}: Iska matlab hai hmm fetch karna chahte hai token ko. Jo ye token hai tumne kaha se liya(Environment secrets se).
