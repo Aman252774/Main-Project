@@ -1,0 +1,40 @@
+name: "Simple Workflows"
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: "Setup Node JS"
+              uses: actions/setup-node@v4 # Uses tells which github actions you want to use.
+              with:  # With batata hai kaun sa version setup karna chahte ho.
+                node-version: '21'
+            
+            - name: "Check node version"
+              run: node --version
+
+            - name: "Clone the repository"
+              uses: actions/checkout@v2 #uses: This is actual predefined action.
+
+            - name: "Install the dependencies"
+              run: npm install #run: This just runs a node basic command.
+
+            - name: "List directories"
+              run: ls
+
+            - name: "Run tests"
+              run: npm test
+
+            - name: "Run Build"
+              run: npm run build
+           
+            - name: "Upload product-ready build folder"
+              uses: actions/upload-artifact@v4
+              with:
+                name: dist # Yaha pe "dist" folder ke andar "build" folder aayega.
+                path: build # Ye wo folder hai jo artifact pe upload hoga.
