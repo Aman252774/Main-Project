@@ -1,5 +1,5 @@
 # We took the base image of project. Jisapr hamara project run hoga.
-FROM node
+FROM nodev14
 
 # We create a new directory MyAPP. MyAPP is current working directory in which it will be performed the action of project.
 WORKDIR /MainApp
