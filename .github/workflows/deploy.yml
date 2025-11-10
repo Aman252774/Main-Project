@@ -41,5 +41,3 @@ jobs: #
 
             - name: "Deploy the aws"
               run: pm2 start src/index.js --name mainapp
-              working-directory: Main-Project # working-directory iss liye describe karte hai taki pm2 ko paata chale ki src/index.js folder kaha pe present hai.
-              # Otherwise pm2 run nahi kar payega hamare project ko.
